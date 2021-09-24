@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { add, remove, toggleCompleted } from "./features/todoSlice";
+import { fetchUser } from "./features/userSlice";
 import { useAppDispatch, useAppSelector } from "./store";
 
 function App() {
   const todos = useAppSelector((state) => state.todos);
+  const user = useAppSelector((state) => state.user);
+
   const [title, setTitle] = useState("");
 
   const dispatch = useAppDispatch();
@@ -41,6 +44,12 @@ function App() {
           </li>
         ))}
       </ul>
+      <div>
+        <button onClick={() => dispatch(fetchUser())}>fetch user</button>
+        {user.loading && "loading"}
+        {user.error && user.error}
+        {user.data && <div>Name : {user.data.results[0].name.first}</div>}
+      </div>
     </div>
   );
 }
