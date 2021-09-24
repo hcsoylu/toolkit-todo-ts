@@ -1,5 +1,5 @@
 import { useState } from "react";
-import todoSlice, { add } from "./features/todoSlice";
+import { add, remove, toggleCompleted } from "./features/todoSlice";
 import { useAppDispatch, useAppSelector } from "./store";
 
 function App() {
@@ -13,6 +13,14 @@ function App() {
     setTitle("");
   };
 
+  const onDelete = (id: string) => {
+    dispatch(remove(id));
+  };
+
+  const toggle = (id: string) => {
+    dispatch(toggleCompleted(id));
+  };
+
   return (
     <div className="App">
       <input
@@ -24,7 +32,13 @@ function App() {
       <button onClick={onSave}>Save</button>
       <ul>
         {todos.map((todo) => (
-          <li key={todo.title}>{todo.title}</li>
+          <li key={todo.title}>
+            <button onClick={() => toggle(todo.id)}>
+              {!todo.completed ? "completed" : "not completed"}
+            </button>
+            <button onClick={() => onDelete(todo.id)}>Delete</button>
+            <span style={{ marginLeft: "20px" }}>{todo.title}</span>
+          </li>
         ))}
       </ul>
     </div>
